@@ -1,0 +1,1 @@
+This repo is a copy from [SPMF: A Java Data Mining Library](http://www.philippe-fournier-viger.com/spmf/) with changing FPMax algorithm.
