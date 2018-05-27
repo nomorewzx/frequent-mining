@@ -119,7 +119,7 @@ public class AlgoFPMaxNew {
      * @return the result if no output file path is provided.
      * @throws IOException exception if error reading or writing files
      */
-    public Itemsets runAlgorithm(List<List<Integer>> transactionSet, String output, double minsupp) throws IOException {
+    public Itemsets runAlgorithm(List<List<Integer>> transactionSet, double minsupp) throws IOException {
         // record start time
         startTimestamp = System.currentTimeMillis();
         // number of itemsets found
@@ -128,15 +128,7 @@ public class AlgoFPMaxNew {
         //initialize tool to record memory usage
         MemoryLogger.getInstance().reset();
         MemoryLogger.getInstance().checkMemory();
-
-        // if the user want to keep the result into memory
-        if (output == null) {
-            writer = null;
-            patterns = new Itemsets("FREQUENT ITEMSETS");
-        } else { // if the user want to save the result to a file
-            patterns = null;
-            writer = new BufferedWriter(new FileWriter(output));
-        }
+        patterns = new Itemsets("FREQUENT ITEMSETS");
 
         // (1) PREPROCESSING: Initial database scan to determine the frequency of each item
         // The frequency is stored in a map:
@@ -166,42 +158,9 @@ public class AlgoFPMaxNew {
             tree.addTransaction(filteredTransaction);
         }
 
-        // read the file
-//        BufferedReader reader = new BufferedReader(new FileReader("."));
-//        String line;
-        // for each line (transaction) until the end of the file
-//        while (((line = reader.readLine()) != null)) {
-//            // if the line is  a comment, is  empty or is a
-//            // kind of metadata
-//            if (line.isEmpty() == true || line.charAt(0) == '#' || line.charAt(0) == '%'
-//                    || line.charAt(0) == '@') {
-//                continue;
-//            }
-//
-//            String[] lineSplited = line.split(" ");
-//            List<Integer> transaction = new ArrayList<Integer>();
-//
-//            // for each item in the transaction
-//            for (String itemString : lineSplited) {
-//                Integer item = Integer.parseInt(itemString);
-//                // only add items that have the minimum support
-//                if (originalMapSupport.get(item) >= minSupportRelative) {
-//                    transaction.add(item);
-//                }
-//            }
-//            // sort item in the transaction by descending order of support
-//            Collections.sort(transaction, comparatorOriginalOrder);
-//            // add the sorted transaction to the fptree.
-//            tree.addTransaction(transaction);
-//        }
-        // close the input file
-//        reader.close();
-
         // We create the header table for the tree using the calculated support of single items
         tree.createHeaderList(originalMapSupport);
 
-
-//		System.out.println(tree);
 
         // (5) We start to mine the FP-Tree by calling the recursive method.
         // Initially, the prefix alpha is empty.
@@ -213,10 +172,6 @@ public class AlgoFPMaxNew {
             fpMax(tree, itemsetBuffer, 0, transactionCount, originalMapSupport);
         }
 
-        // close the output file if the result was saved to a file
-        if (writer != null) {
-            writer.close();
-        }
         // record the execution end time
         endTime = System.currentTimeMillis();
 

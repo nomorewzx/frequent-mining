@@ -11,7 +11,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 public class FPMaxTests {
 
@@ -47,7 +46,7 @@ public class FPMaxTests {
     @Test
     public void testFPMaxNewEqualsFPMaxWhenRunAlgo() throws IOException {
         AlgoFPMaxNew newAlgo = new AlgoFPMaxNew();
-        Itemsets patterns = newAlgo.runAlgorithm(originalTransactionSet, null, 0.3);
+        Itemsets patterns = newAlgo.runAlgorithm(originalTransactionSet, 0.3);
 
         AlgoFPMax oldAlgo = new AlgoFPMax();
         Itemsets oldAlgoPatterns = oldAlgo.runAlgorithm(inputFilePath, null, 0.3);
